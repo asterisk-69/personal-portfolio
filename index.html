@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rama Sudhamshu Kumar — ECE &amp; AI/ML Systems</title>
+<meta name="description" content="Portfolio of Rama Sudhamshu Kumar — Electronics &amp; Communication Engineering student specializing in AI/ML, NLP, and data automation.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          base: '#1A1330',
+          surface: '#241B42',
+          surface2: '#2C2150',
+          border: {
+            DEFAULT: '#3A2E5C',
+            strong: '#4E3F7A'
+          },
+          ink: '#F5F1FF',
+          muted: '#B7ADD9',
+          dim: '#8579AC',
+          accent: '#9B6DFF',
+          accentDim: '#9B6DFF1F',
+          accentBlue: '#4FA8FF',
+          accentBlueDim: '#4FA8FF1F',
+          accentRed: '#FF4D63',
+          accentRedDim: '#FF4D631F'
+        },
+        fontFamily: {
+          display: ['"Space Grotesk"', 'sans-serif'],
+          body: ['Inter', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'monospace']
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body {
+    background-color: #1A1330;
+    background-image:
+      radial-gradient(ellipse 900px 550px at 15% -5%, rgba(155,109,255,0.20), transparent 60%),
+      radial-gradient(ellipse 800px 550px at 100% 25%, rgba(79,168,255,0.14), transparent 60%),
+      radial-gradient(ellipse 750px 550px at 5% 75%, rgba(255,77,99,0.12), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 95% 95%, rgba(155,109,255,0.10), transparent 60%);
+    background-attachment: fixed;
+  }
+
+  ::selection { background: #9B6DFF; color: #F5F1FF; }
+
+  :focus-visible {
+    outline: 2px solid #9B6DFF;
+    outline-offset: 3px;
+  }
+
+  /* Corner ticks for the spec-plate signature element */
+  .tick { position: absolute; width: 10px; height: 10px; }
+  .tick::before, .tick::after { content: ''; position: absolute; background: #4E3F7A; }
+  .tick-tl { top: -1px; left: -1px; }
+  .tick-tl::before { width: 10px; height: 1px; top: 0; left: 0; }
+  .tick-tl::after { width: 1px; height: 10px; top: 0; left: 0; }
+  .tick-tr { top: -1px; right: -1px; }
+  .tick-tr::before { width: 10px; height: 1px; top: 0; right: 0; }
+  .tick-tr::after { width: 1px; height: 10px; top: 0; right: 0; }
+  .tick-bl { bottom: -1px; left: -1px; }
+  .tick-bl::before { width: 10px; height: 1px; bottom: 0; left: 0; }
+  .tick-bl::after { width: 1px; height: 10px; bottom: 0; left: 0; }
+  .tick-br { bottom: -1px; right: -1px; }
+  .tick-br::before { width: 10px; height: 1px; bottom: 0; right: 0; }
+  .tick-br::after { width: 1px; height: 10px; bottom: 0; right: 0; }
+
+  /* reveal on scroll */
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* chronology gradient: most recent (violet) fading through blue to light red */
+  .timeline-line {
+    background: linear-gradient(to bottom, #9B6DFF, #4FA8FF 45%, #FF4D63 85%);
+  }
+
+  .node-dot {
+    box-shadow: 0 0 0 4px #1A1330, 0 0 0 6px #9B6DFF66;
+  }
+
+  /* Contact portrait frame */
+  .portrait-frame {
+    position: relative;
+    overflow: hidden;
+    background: #1A1330;
+  }
+  .portrait-frame img {
+    filter: grayscale(65%) contrast(1.05) brightness(0.92);
+    transition: filter 0.5s ease, transform 0.6s ease;
+  }
+  .portrait-frame:hover img {
+    filter: grayscale(0%) contrast(1.02) brightness(1);
+    transform: scale(1.03);
+  }
+  .portrait-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(26,19,48,0) 55%, rgba(26,19,48,0.85) 100%),
+                linear-gradient(100deg, rgba(155,109,255,0.16), transparent 55%);
+    pointer-events: none;
+  }
+
+  /* ===== fixed wavy scroll-progress rail — bold + section-aware ===== */
+  #scrollCurve { opacity: 1; }
+
+  #curveTrack {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  #curveGlow {
+    fill: none;
+    stroke: url(#curveGradient);
+    stroke-width: 14;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: blur(9px);
+    opacity: 0.65;
+  }
+
+  #curvePath {
+    fill: none;
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 0 8px #9B6DFFaa);
+  }
+
+  /* animated hue-cycling gradient stops for a livelier, more distinctive rail */
+  #stopA { animation: hueShiftA 6s ease-in-out infinite; }
+  #stopB { animation: hueShiftB 6s ease-in-out infinite; }
+  #stopC { animation: hueShiftC 6s ease-in-out infinite; }
+  @keyframes hueShiftA {
+    0%, 100% { stop-color: #9B6DFF; }
+    50% { stop-color: #C79BFF; }
+  }
+  @keyframes hueShiftB {
+    0%, 100% { stop-color: #4FA8FF; }
+    50% { stop-color: #6FD0FF; }
+  }
+  @keyframes hueShiftC {
+    0%, 100% { stop-color: #FF4D63; }
+    50% { stop-color: #FF8A6D; }
+  }
+
+  #curvePuck {
+    filter: drop-shadow(0 0 12px #F5F1FFdd) drop-shadow(0 0 24px #9B6DFFaa);
+    animation: puckPulse 1.4s ease-in-out infinite;
+  }
+  @keyframes puckPulse {
+    0%, 100% { r: 6.5; }
+    50% { r: 9; }
+  }
+
+  #curvePuckRing {
+    fill: none;
+    stroke: #F5F1FF;
+    stroke-width: 1.5;
+    opacity: 0.5;
+    animation: ringPulse 1.4s ease-in-out infinite;
+  }
+  @keyframes ringPulse {
+    0% { r: 8; opacity: 0.6; }
+    100% { r: 16; opacity: 0; }
+  }
+
+  .curve-marker-dot {
+    transition: r 0.25s ease, fill 0.25s ease, opacity 0.25s ease;
+  }
+  .curve-marker-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8.5px;
+    letter-spacing: 0.08em;
+    fill: #8579AC;
+    text-transform: uppercase;
+    transition: fill 0.25s ease, opacity 0.25s ease;
+    opacity: 0;
+  }
+  .curve-marker.active .curve-marker-label {
+    opacity: 1;
+    fill: #F5F1FF;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+    html { scroll-behavior: auto; }
+    #curvePath { stroke-dashoffset: 0 !important; }
+    #stopA, #stopB, #stopC, #curvePuckRing { animation: none !important; }
+  }
+</style>
+</head>
+
+<body class="font-body text-ink antialiased">
+
+<!-- ============ SCROLL-PROGRESS CURVE ============ -->
+<svg id="scrollCurve" class="hidden lg:block fixed left-2 top-0 w-16 h-screen z-40 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="curveGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop id="stopA" offset="0%" stop-color="#9B6DFF"/>
+      <stop id="stopB" offset="50%" stop-color="#4FA8FF"/>
+      <stop id="stopC" offset="100%" stop-color="#FF4D63"/>
+    </linearGradient>
+  </defs>
+  <path id="curveTrack" stroke="#3A2E5C" stroke-width="2" fill="none" opacity="0.5"></path>
+  <path id="curveGlow"></path>
+  <path id="curvePath" stroke="url(#curveGradient)"></path>
+  <g id="curveMarkers"></g>
+  <g id="curveParticles"></g>
+  <circle id="curvePuckRing"></circle>
+  <circle id="curvePuck" r="6.5" fill="#F5F1FF"></circle>
+</svg>
+
+<!-- ============ NAV ============ -->
+<header class="fixed top-0 inset-x-0 z-50 border-b border-border bg-base/85 backdrop-blur-md">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 h-16 flex items-center justify-end gap-8">
+    <nav class="hidden md:flex items-center gap-8 font-mono text-xs uppercase tracking-widest text-muted mr-auto">
+      <a href="#about" class="hover:text-accentBlue transition-colors">About</a>
+      <a href="#experience" class="hover:text-accent transition-colors">Experience</a>
+      <a href="#skills" class="hover:text-accentRed transition-colors">Skills</a>
+      <a href="#projects" class="hover:text-accent transition-colors">Projects</a>
+      <a href="#contact" class="hover:text-accentBlue transition-colors">Contact</a>
+    </nav>
+
+    <a href="#contact" class="hidden md:inline-flex items-center gap-2 border border-border-strong hover:border-accentRed px-4 py-2 font-mono text-xs uppercase tracking-widest text-ink hover:text-accentRed transition-colors">
+      Get in touch
+    </a>
+
+    <button id="menuBtn" aria-label="Toggle navigation menu" aria-expanded="false" class="md:hidden text-ink w-9 h-9 flex items-center justify-center border border-border">
+      <svg id="menuIconOpen" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <svg id="menuIconClose" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+
+  <div id="mobileMenu" class="hidden md:hidden border-t border-border bg-base">
+    <nav class="flex flex-col font-mono text-xs uppercase tracking-widest text-muted">
+      <a href="#about" class="px-6 py-4 border-b border-border hover:text-accentBlue">About</a>
+      <a href="#experience" class="px-6 py-4 border-b border-border hover:text-accent">Experience</a>
+      <a href="#skills" class="px-6 py-4 border-b border-border hover:text-accentRed">Skills</a>
+      <a href="#projects" class="px-6 py-4 border-b border-border hover:text-accent">Projects</a>
+      <a href="#contact" class="px-6 py-4 hover:text-accentBlue">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top" class="max-w-6xl mx-auto px-6 lg:px-8">
+
+  <!-- ============ HERO ============ -->
+  <section class="pt-40 pb-24 grid lg:grid-cols-[1.2fr_0.8fr] gap-14 items-start">
+    <div class="reveal">
+      <p class="font-mono text-xs uppercase tracking-[0.25em] text-accent mb-6">[ Portfolio — 2026 ]</p>
+      <h1 class="font-display font-semibold text-5xl sm:text-6xl leading-[1.05] text-ink">
+        Rama Sudhamshu Kumar
+      </h1>
+      <p class="font-display text-xl sm:text-2xl text-muted mt-4 leading-snug">
+        Electronics &amp; Communication Engineer building <span class="text-accentBlue">AI/ML</span> &amp;
+        <span class="text-accentRed">data&#8209;automation</span> systems.
+      </p>
+      <p class="font-body text-base text-muted/90 mt-6 max-w-xl leading-relaxed">
+        Third-year B.Tech ECE student at KITSW with a minor in Banking, Financial Services &amp; Insurance.
+        I work across NLP pipelines, automation tooling, and applied machine learning —
+        currently analyzing operational data and building automation pipelines at BotsIn LLC.
+      </p>
+
+      <div class="flex flex-wrap gap-4 mt-10">
+        <a href="#projects" class="inline-flex items-center gap-2 bg-accent text-base font-mono text-xs uppercase tracking-widest px-6 py-3.5 hover:bg-accent/90 transition-colors">
+          View Projects
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="19" x2="19" y2="5"/><polyline points="9 5 19 5 19 15"/></svg>
+        </a>
+        <a href="#contact" class="inline-flex items-center gap-2 border border-accentRed/60 text-accentRed font-mono text-xs uppercase tracking-widest px-6 py-3.5 hover:bg-accentRed hover:text-base transition-colors">
+          Contact Me
+        </a>
+      </div>
+    </div>
+
+    <!-- Signature element: engineering "spec plate" -->
+    <div class="reveal relative border border-border-strong bg-surface p-6 lg:mt-4">
+      <div class="tick tick-tl"></div><div class="tick tick-tr"></div>
+      <div class="tick tick-bl"></div><div class="tick tick-br"></div>
+
+      <dl class="space-y-0">
+        <div class="flex items-center justify-between py-3 border-b border-border">
+          <dt class="font-mono text-xs uppercase tracking-wider text-muted">CGPA</dt>
+          <dd class="font-display text-sm text-ink">9.60 / 10.0</dd>
+        </div>
+        <div class="flex items-center justify-between py-3 border-b border-border">
+          <dt class="font-mono text-xs uppercase tracking-wider text-muted">Program</dt>
+          <dd class="font-display text-sm text-ink">B.Tech ECE, Minor BFSI</dd>
+        </div>
+        <div class="flex items-center justify-between py-3 border-b border-border">
+          <dt class="font-mono text-xs uppercase tracking-wider text-muted">Institute</dt>
+          <dd class="font-display text-sm text-ink">KITSW, Warangal</dd>
+        </div>
+        <div class="flex items-center justify-between py-3 border-b border-border">
+          <dt class="font-mono text-xs uppercase tracking-wider text-muted">Focus</dt>
+          <dd class="font-display text-sm text-ink text-right">AI/ML · NLP · Automation</dd>
+        </div>
+        <div class="flex items-center justify-between py-3">
+          <dt class="font-mono text-xs uppercase tracking-wider text-muted">Status</dt>
+          <dd class="font-mono text-xs text-accentBlue flex items-center gap-2">
+            <span class="h-1.5 w-1.5 rounded-full bg-accentBlue inline-block"></span>
+            Open to opportunities
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" class="py-24 border-t border-border scroll-mt-20">
+    <div class="grid lg:grid-cols-[240px_1fr] gap-10">
+      <div class="reveal">
+        <p class="font-mono text-xs uppercase tracking-[0.25em] text-accentBlue">[ About ]</p>
+        <h2 class="font-display font-semibold text-3xl text-ink mt-3">Summary</h2>
+      </div>
+      <div class="reveal space-y-6">
+        <p class="text-muted leading-relaxed max-w-2xl">
+          Motivated and analytical third-year B.Tech Electronics &amp; Communication Engineering student with a minor in
+          Banking, Financial Services and Insurance, and a strong academic record (<span class="text-accentRed">CGPA 9.60</span>).
+          Skilled in <span class="text-accentBlue">AI/ML</span>, NLP, data analysis, automation, and design thinking, with hands-on
+          experience across machine learning, data/automation analytics, and telecommunications internships. Passionate about
+          building intelligent systems and pursuing innovation-driven opportunities.
+        </p>
+
+        <div class="grid sm:grid-cols-3 gap-4 pt-4">
+          <div class="border border-border p-5 hover:border-accent/60 transition-colors">
+            <p class="font-display text-2xl text-accent">9.60</p>
+            <p class="font-mono text-[11px] uppercase tracking-wider text-dim mt-1">CGPA, KITSW</p>
+          </div>
+          <div class="border border-border p-5 hover:border-accentBlue/60 transition-colors">
+            <p class="font-display text-2xl text-accentBlue">3</p>
+            <p class="font-mono text-[11px] uppercase tracking-wider text-dim mt-1">Internships completed</p>
+          </div>
+          <div class="border border-border p-5 hover:border-accentRed/60 transition-colors">
+            <p class="font-display text-2xl text-accentRed">4</p>
+            <p class="font-mono text-[11px] uppercase tracking-wider text-dim mt-1">Languages spoken</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EXPERIENCE ============ -->
+  <section id="experience" class="py-24 border-t border-border scroll-mt-20">
+    <div class="reveal mb-14">
+      <p class="font-mono text-xs uppercase tracking-[0.25em] text-accentRed">[ Experience ]</p>
+      <h2 class="font-display font-semibold text-3xl text-ink mt-3">Where I've worked</h2>
+    </div>
+
+    <div class="grid lg:grid-cols-[240px_1fr] gap-10">
+      <div class="hidden lg:block"></div>
+
+      <div class="relative pl-10">
+        <div class="timeline-line absolute left-[7px] top-2 bottom-2 w-px"></div>
+
+        <!-- BotsIn (most recent — violet) -->
+        <div class="reveal relative pb-14">
+          <span class="absolute -left-10 top-1.5 h-3 w-3 rounded-full bg-accent node-dot"></span>
+          <p class="font-mono text-xs uppercase tracking-wider text-dim">Jun 2026 — Present</p>
+          <h3 class="font-display text-xl text-ink mt-2">Data and Automation Analyst Intern</h3>
+          <p class="text-accent text-sm font-mono mt-1">BotsIn LLC</p>
+          <ul class="mt-4 space-y-2.5 text-muted text-sm leading-relaxed max-w-2xl">
+            <li class="flex gap-3"><span class="text-accent mt-1.5">▸</span>Analyze operational and business datasets to identify trends, inefficiencies, and automation opportunities across internal workflows.</li>
+            <li class="flex gap-3"><span class="text-accent mt-1.5">▸</span>Design and build automation scripts/pipelines to streamline repetitive data processing and reporting tasks, reducing manual effort.</li>
+          </ul>
+        </div>
+
+        <!-- Infosys (mid — blue) -->
+        <div class="reveal relative pb-14">
+          <span class="absolute -left-10 top-1.5 h-3 w-3 rounded-full bg-surface border-2 border-accentBlue"></span>
+          <p class="font-mono text-xs uppercase tracking-wider text-dim">Nov 2025 — Feb 2026</p>
+          <h3 class="font-display text-xl text-ink mt-2">Machine Learning Intern</h3>
+          <p class="text-accentBlue text-sm font-mono mt-1">Infosys</p>
+          <ul class="mt-4 space-y-2.5 text-muted text-sm leading-relaxed max-w-2xl">
+            <li class="flex gap-3"><span class="text-accentBlue mt-1.5">▸</span>Designed and developed an AI-powered text analysis application using Python and NLP.</li>
+            <li class="flex gap-3"><span class="text-accentBlue mt-1.5">▸</span>Implemented sentiment analysis with confidence scoring, automatic text summarization, and keyword extraction using TF-IDF and NMF.</li>
+            <li class="flex gap-3"><span class="text-accentBlue mt-1.5">▸</span>Built an interactive Streamlit-based UI and deployed a complete end-to-end NLP pipeline.</li>
+          </ul>
+        </div>
+
+        <!-- BSNL (oldest — light red) -->
+        <div class="reveal relative">
+          <span class="absolute -left-10 top-1.5 h-3 w-3 rounded-full bg-surface border-2 border-accentRed"></span>
+          <p class="font-mono text-xs uppercase tracking-wider text-dim">Jun 2025</p>
+          <h3 class="font-display text-xl text-ink mt-2">Intern, Telecommunications &amp; Networking</h3>
+          <p class="text-accentRed text-sm font-mono mt-1">BSNL</p>
+          <ul class="mt-4 space-y-2.5 text-muted text-sm leading-relaxed max-w-2xl">
+            <li class="flex gap-3"><span class="text-accentRed mt-1.5">▸</span>Worked on network configuration and packet routing using Cisco Packet Tracer.</li>
+            <li class="flex gap-3"><span class="text-accentRed mt-1.5">▸</span>Designed and tested VLAN-based secure communication models.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EDUCATION ============ -->
+  <section class="py-24 border-t border-border">
+    <div class="grid lg:grid-cols-[240px_1fr] gap-10">
+      <div class="reveal">
+        <p class="font-mono text-xs uppercase tracking-[0.25em] text-accentBlue">[ Education ]</p>
+        <h2 class="font-display font-semibold text-3xl text-ink mt-3">Academic record</h2>
+      </div>
+      <div class="reveal grid sm:grid-cols-2 gap-4">
+        <div class="border border-border p-6 hover:border-accent/60 transition-colors">
+          <p class="font-mono text-xs uppercase tracking-wider text-dim">Jun 2024 — 2028</p>
+          <h3 class="font-display text-lg text-ink mt-2">B.Tech, Electronics &amp; Communication Engineering</h3>
+          <p class="text-accent text-sm font-mono mt-1">KITSW, Warangal</p>
+          <p class="text-muted text-sm mt-3 leading-relaxed">Minor in Banking, Financial Services &amp; Insurance (BFSI)</p>
+          <p class="font-display text-ink text-sm mt-3">CGPA: <span class="text-accentRed">9.60</span></p>
+        </div>
+        <div class="border border-border p-6 hover:border-accentBlue/60 transition-colors">
+          <p class="font-mono text-xs uppercase tracking-wider text-dim">Jun 2022 — 2024</p>
+          <h3 class="font-display text-lg text-ink mt-2">Intermediate, MPC</h3>
+          <p class="text-accentBlue text-sm font-mono mt-1">Sri Chaitanya Junior College</p>
+          <p class="font-display text-ink text-sm mt-3">Score: <span class="text-accentRed">96%</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SKILLS ============ -->
+  <section id="skills" class="py-24 border-t border-border scroll-mt-20">
+    <div class="reveal mb-14">
+      <p class="font-mono text-xs uppercase tracking-[0.25em] text-accentRed">[ Skills ]</p>
+      <h2 class="font-display font-semibold text-3xl text-ink mt-3">Tools &amp; capabilities</h2>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="reveal border border-border p-6">
+        <p class="font-mono text-[11px] uppercase tracking-wider text-accent mb-4">Programming</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="border border-border-strong text-xs font-mono px-3 py-1.5 text-muted">C</span>
+          <span class="border border-border-strong text-xs font-mono px-3 py-1.5 text-muted">Python</span>
+          <span class="border border-border-strong text-xs font-mono px-3 py-1.5 text-muted">Java</span>
+          <span class="border border-border-strong text-xs font-mono px-3 py-1.5 text-muted">HTML</span>
+          <span class="border border-border-strong text-xs font-mono px-3 py-1.5 text-muted">CSS</span>
+        </div>
+      </div>
+      <div class="reveal border border-border p-6">
+        <p class="font-mono text-[11px] uppercase tracking-wider text-accentBlue mb-4">Tools</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="border border-border-strong text-xs font-mono px-3 py-1.5 text-muted">Cisco Packet Tracer</span>
+          <span class="border border-border-strong text-xs font-mono px-3 py-1.5 text-muted">MySQL</span>
+          <span class="border border-border-strong text-xs font-mono px-3 py-1.5 text-muted">GitHub</span>
+        </div>
+      </div>
+      <div class="reveal border border-border p-6">
+        <p class="font-mono text-[11px] uppercase tracking-wider text-accentRed mb-4">Design &amp; BI</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="border border-border-strong text-xs font-mono px-3 py-1.5 text-muted">Power BI</span>
+          <span class="border border-border-strong text-xs font-mono px-3 py-1.5 text-muted">Figma</span>
+          <span class="border border-border-strong text-xs font-mono px-3 py-1.5 text-muted">Canva</span>
+        </div>
+      </div>
+      <div class="reveal border border-border p-6">
+        <p class="font-mono text-[11px] uppercase tracking-wider text-accent mb-4">Languages</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="border border-border-strong text-xs font-mono px-3 py-1.5 text-muted">Telugu</span>
+          <span class="border border-border-strong text-xs font-mono px-3 py-1.5 text-muted">Hindi</span>
+          <span class="border border-border-strong text-xs font-mono px-3 py-1.5 text-muted">English</span>
+          <span class="border border-border-strong text-xs font-mono px-3 py-1.5 text-muted">German (A2)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Achievements strip -->
+    <div class="reveal mt-4 border border-border p-6">
+      <p class="font-mono text-[11px] uppercase tracking-wider text-dim mb-4">Achievements</p>
+      <ul class="grid sm:grid-cols-2 gap-x-8 gap-y-2.5 text-sm text-muted">
+        <li class="flex gap-3"><span class="text-accent">▸</span>Served as School Pupil Leader (SPL)</li>
+        <li class="flex gap-3"><span class="text-accentBlue">▸</span>Presented multiple technical and academic seminars</li>
+        <li class="flex gap-3"><span class="text-accentRed">▸</span>Attended multiple workshops and earned certifications</li>
+        <li class="flex gap-3"><span class="text-accent">▸</span>Coordinated and conducted several college and club events</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ PROJECTS ============ -->
+  <section id="projects" class="py-24 border-t border-border scroll-mt-20">
+    <div class="reveal mb-14">
+      <p class="font-mono text-xs uppercase tracking-[0.25em] text-accent">[ Projects ]</p>
+      <h2 class="font-display font-semibold text-3xl text-ink mt-3">Selected work</h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-5">
+      <!-- Project 1 -->
+      <article class="reveal group border border-border p-7 flex flex-col justify-between hover:border-accent/60 transition-colors">
+        <div>
+          <div class="flex items-start justify-between">
+            <h3 class="font-display text-xl text-ink">Multimodal PDF Copilot</h3>
+            <a href="https://github.com/asterisk-69/multimodal-pdf-copilot" target="_blank" rel="noopener noreferrer" aria-label="View Multimodal PDF Copilot on GitHub" class="shrink-0 h-8 w-8 flex items-center justify-center border border-border-strong text-muted group-hover:text-accent group-hover:border-accent transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="19" x2="19" y2="5"/><polyline points="9 5 19 5 19 15"/></svg>
+            </a>
+          </div>
+          <p class="text-muted text-sm leading-relaxed mt-4">
+            An AI-powered copilot for analyzing and interacting with PDF documents, combining text extraction with
+            intelligent querying to generate contextual responses through a scalable document-understanding pipeline.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-2 mt-6 pt-6 border-t border-border">
+          <span class="text-[11px] font-mono px-2.5 py-1 text-accent border border-accent/30">Python</span>
+          <span class="text-[11px] font-mono px-2.5 py-1 text-dim border border-border">NLP</span>
+          <span class="text-[11px] font-mono px-2.5 py-1 text-dim border border-border">Document AI</span>
+        </div>
+      </article>
+
+      <!-- Project 2 -->
+      <article class="reveal group border border-border p-7 flex flex-col justify-between hover:border-accentRed/60 transition-colors">
+        <div>
+          <div class="flex items-start justify-between">
+            <h3 class="font-display text-xl text-ink">PetCareAI</h3>
+            <a href="https://github.com/asterisk-69/petcare-ai" target="_blank" rel="noopener noreferrer" aria-label="View PetCareAI on GitHub" class="shrink-0 h-8 w-8 flex items-center justify-center border border-border-strong text-muted group-hover:text-accentRed group-hover:border-accentRed transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="19" x2="19" y2="5"/><polyline points="9 5 19 5 19 15"/></svg>
+            </a>
+          </div>
+          <p class="text-muted text-sm leading-relaxed mt-4">
+            An AI-based pet food analysis system using the Groq API for ultra-fast inference — evaluating food
+            combinations for safety, nutrition, and taste suitability across multiple pets via prompt engineering
+            and LLM-based reasoning.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-2 mt-6 pt-6 border-t border-border">
+          <span class="text-[11px] font-mono px-2.5 py-1 text-accentRed border border-accentRed/30">Groq API</span>
+          <span class="text-[11px] font-mono px-2.5 py-1 text-dim border border-border">LLM Reasoning</span>
+          <span class="text-[11px] font-mono px-2.5 py-1 text-dim border border-border">JavaScript</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ EXTRACURRICULAR ============ -->
+  <section class="py-24 border-t border-border">
+    <div class="grid lg:grid-cols-[240px_1fr] gap-10">
+      <div class="reveal">
+        <p class="font-mono text-xs uppercase tracking-[0.25em] text-accentBlue">[ Beyond Academics ]</p>
+        <h2 class="font-display font-semibold text-3xl text-ink mt-3">Extracurricular</h2>
+      </div>
+      <div class="reveal grid sm:grid-cols-2 gap-4">
+        <div class="border border-border p-6 hover:border-accent/60 transition-colors">
+          <p class="font-mono text-xs uppercase tracking-wider text-dim">AY 2025 — 2026</p>
+          <h3 class="font-display text-lg text-ink mt-2">Executive Member</h3>
+          <p class="text-accent text-sm font-mono mt-1">Literary Club, KITSW</p>
+          <p class="text-muted text-sm mt-3 leading-relaxed">Organized literary and creative-writing events, coordinating logistics and participant engagement.</p>
+        </div>
+        <div class="border border-border p-6 hover:border-accentRed/60 transition-colors">
+          <p class="font-mono text-xs uppercase tracking-wider text-dim">AY 2026 — 2027 · Present</p>
+          <h3 class="font-display text-lg text-ink mt-2">Event Manager</h3>
+          <p class="text-accentRed text-sm font-mono mt-1">SAiL I²RE, KITSW</p>
+          <p class="text-muted text-sm mt-3 leading-relaxed">Plans and manages events for SAiL I²RE, overseeing coordination, scheduling, and on-ground execution.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact" class="py-24 border-t border-border scroll-mt-20">
+    <div class="grid lg:grid-cols-[1.1fr_0.9fr] gap-14 items-start">
+      <div class="reveal">
+        <div class="flex items-start gap-6">
+          <div class="portrait-frame relative shrink-0 w-24 h-24 sm:w-28 sm:h-28 border border-border-strong">
+            <div class="tick tick-tl"></div><div class="tick tick-tr"></div>
+            <div class="tick tick-bl"></div><div class="tick tick-br"></div>
+            <img src="shiva.pic.jpeg" alt="Portrait of Rama Sudhamshu Kumar" class="w-full h-full object-cover object-top">
+          </div>
+          <div>
+            <p class="font-mono text-xs uppercase tracking-[0.25em] text-accentRed">[ Contact ]</p>
+            <h2 class="font-display font-semibold text-4xl text-ink mt-3 leading-tight">Let's build<br>something together.</h2>
+          </div>
+        </div>
+        <p class="text-muted mt-6 max-w-md leading-relaxed">
+          Open to internships, research collaborations, and roles in <span class="text-accentBlue">AI/ML</span> and applied
+          data systems. Reach out directly — I usually reply within a day.
+        </p>
+      </div>
+
+      <div class="reveal relative border border-border-strong bg-surface p-6">
+        <div class="tick tick-tl"></div><div class="tick tick-tr"></div>
+        <div class="tick tick-bl"></div><div class="tick tick-br"></div>
+
+        <p class="font-mono text-[10px] uppercase tracking-[0.25em] text-dim mb-5">Direct Channels</p>
+
+        <div class="space-y-0">
+          <a href="mailto:ramashiva84@gmail.com" class="flex items-center justify-between py-4 border-b border-border group">
+            <span class="font-mono text-xs uppercase tracking-wider text-muted">Email</span>
+            <span class="font-display text-sm text-ink group-hover:text-accent transition-colors">ramashiva84@gmail.com</span>
+          </a>
+          <a href="tel:+918185060924" class="flex items-center justify-between py-4 border-b border-border group">
+            <span class="font-mono text-xs uppercase tracking-wider text-muted">Phone</span>
+            <span class="font-display text-sm text-ink group-hover:text-accentBlue transition-colors">+91 81850 60924</span>
+          </a>
+          <a href="https://www.linkedin.com/in/rama-sudhamshu-kumar" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between py-4 border-b border-border group">
+            <span class="font-mono text-xs uppercase tracking-wider text-muted">LinkedIn</span>
+            <span class="font-display text-sm text-ink group-hover:text-accentRed transition-colors">View Profile</span>
+          </a>
+          <a href="https://github.com/asterisk-69" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between py-4 group">
+            <span class="font-mono text-xs uppercase tracking-wider text-muted">GitHub</span>
+            <span class="font-display text-sm text-ink group-hover:text-accent transition-colors">asterisk-69</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="border-t border-border mt-8">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <p class="font-mono text-xs text-dim">© 2026 Rama Sudhamshu Kumar. Built with intent.</p>
+    <p class="font-mono text-xs text-dim">Warangal, Telangana, India</p>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu toggle
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const iconOpen = document.getElementById('menuIconOpen');
+  const iconClose = document.getElementById('menuIconClose');
+
+  menuBtn.addEventListener('click', () => {
+    const isHidden = mobileMenu.classList.contains('hidden');
+    mobileMenu.classList.toggle('hidden');
+    iconOpen.classList.toggle('hidden');
+    iconClose.classList.toggle('hidden');
+    menuBtn.setAttribute('aria-expanded', String(isHidden));
+  });
+
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+      iconOpen.classList.remove('hidden');
+      iconClose.classList.add('hidden');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  revealEls.forEach(el => observer.observe(el));
+
+  // ---- Dynamic wavy scroll-progress rail with section markers ----
+  const curveSvg = document.getElementById('scrollCurve');
+  const curveTrack = document.getElementById('curveTrack');
+  const curveGlow = document.getElementById('curveGlow');
+  const curvePath = document.getElementById('curvePath');
+  const curvePuck = document.getElementById('curvePuck');
+  const curvePuckRing = document.getElementById('curvePuckRing');
+  const markerGroup = document.getElementById('curveMarkers');
+  const particleGroup = document.getElementById('curveParticles');
+  const NUM_PARTICLES = 8;
+  const particles = [];
+  let pathLength = 0;
+  let displayProgress = 0;
+  let targetProgress = 0;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const SECTIONS = [
+    { id: 'about', label: 'About' },
+    { id: 'experience', label: 'Exp' },
+    { id: 'skills', label: 'Skills' },
+    { id: 'projects', label: 'Work' },
+    { id: 'contact', label: 'Contact' }
+  ];
+  let markerEls = [];
+
+  function buildCurve() {
+    if (!curveSvg) return;
+    const h = window.innerHeight;
+    curveSvg.setAttribute('viewBox', `0 0 64 ${h}`);
+    const wavelength = 95;
+    const amplitude = 26;
+    let d = 'M32 0 ';
+    for (let y = 0; y <= h; y += 8) {
+      const x = 32 + amplitude * Math.sin((y / wavelength) * Math.PI * 2);
+      d += `L${x.toFixed(1)} ${y} `;
+    }
+    curvePath.setAttribute('d', d);
+    curveGlow.setAttribute('d', d);
+    curveTrack.setAttribute('d', d);
+    pathLength = curvePath.getTotalLength();
+
+    if (particleGroup.children.length === 0) {
+      for (let i = 0; i < NUM_PARTICLES; i++) {
+        const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        c.setAttribute('r', 2.8 - i * 0.15);
+        c.setAttribute('fill', '#F5F1FF');
+        particleGroup.appendChild(c);
+        particles.push(c);
+      }
+    }
+
+    if (!reduceMotion) {
+      curvePath.style.strokeDasharray = pathLength;
+      curveGlow.style.strokeDasharray = pathLength;
+    }
+
+    buildMarkers();
+    renderAt(displayProgress);
+  }
+
+  function buildMarkers() {
+    markerGroup.innerHTML = '';
+    markerEls = [];
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (docHeight <= 0 || !pathLength) return;
+
+    SECTIONS.forEach(sec => {
+      const el = document.getElementById(sec.id);
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const top = rect.top + window.scrollY;
+      const progress = Math.min(Math.max(top / docHeight, 0), 1);
+      const len = pathLength * progress;
+      const pt = curvePath.getPointAtLength(len);
+
+      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      g.setAttribute('class', 'curve-marker');
+      g.dataset.progress = progress;
+
+      const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      dot.setAttribute('class', 'curve-marker-dot');
+      dot.setAttribute('cx', pt.x);
+      dot.setAttribute('cy', pt.y);
+      dot.setAttribute('r', 3);
+      dot.setAttribute('fill', '#3A2E5C');
+      dot.setAttribute('stroke', '#8579AC');
+      dot.setAttribute('stroke-width', '1');
+
+      const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      label.setAttribute('class', 'curve-marker-label');
+      label.setAttribute('x', pt.x + 10);
+      label.setAttribute('y', pt.y + 3);
+      label.textContent = sec.label;
+
+      g.appendChild(dot);
+      g.appendChild(label);
+      markerGroup.appendChild(g);
+      markerEls.push({ g, dot, progress });
+    });
+  }
+
+  function updateMarkers(progress) {
+    markerEls.forEach(m => {
+      const passed = progress >= m.progress - 0.005;
+      m.g.classList.toggle('active', passed);
+      m.dot.setAttribute('fill', passed ? '#F5F1FF' : '#3A2E5C');
+      m.dot.setAttribute('stroke', passed ? '#9B6DFF' : '#8579AC');
+      m.dot.setAttribute('r', passed ? 4 : 3);
+    });
+  }
+
+  function renderAt(progress) {
+    if (!pathLength) return;
+    const len = pathLength * progress;
+    if (!reduceMotion) {
+      curvePath.style.strokeDashoffset = pathLength - len;
+      curveGlow.style.strokeDashoffset = pathLength - len;
+    }
+    const pt = curvePath.getPointAtLength(len);
+    curvePuck.setAttribute('cx', pt.x);
+    curvePuck.setAttribute('cy', pt.y);
+    curvePuckRing.setAttribute('cx', pt.x);
+    curvePuckRing.setAttribute('cy', pt.y);
+
+    particles.forEach((p, i) => {
+      const trailLen = Math.max(len - (i + 1) * 12, 0);
+      const tp = curvePath.getPointAtLength(trailLen);
+      p.setAttribute('cx', tp.x);
+      p.setAttribute('cy', tp.y);
+      p.setAttribute('opacity', Math.max(0.6 - i * 0.075, 0));
+    });
+
+    updateMarkers(progress);
+  }
+
+  function computeTargetProgress() {
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    targetProgress = docHeight > 0 ? Math.min(Math.max(window.scrollY / docHeight, 0), 1) : 0;
+  }
+
+  function tick() {
+    displayProgress += (targetProgress - displayProgress) * 0.12;
+    if (Math.abs(targetProgress - displayProgress) < 0.0005) displayProgress = targetProgress;
+    renderAt(displayProgress);
+    requestAnimationFrame(tick);
+  }
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(buildCurve, 150);
+  });
+  window.addEventListener('scroll', computeTargetProgress, { passive: true });
+  buildCurve();
+  computeTargetProgress();
+  requestAnimationFrame(tick);
+</script>
+
+</body>
+</html>
